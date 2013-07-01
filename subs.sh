@@ -1,9 +1,10 @@
 #!/bin/bash
-[[ -z "$@" ]] && ( echo "No files selected" && exit 1 )
+[[ -z "$@" ]] && { echo "No files selected" 1>&2; exit 1; }
 
 for file in "$@"; do
 	echo "Processing $file..."
 
+	[ -f "$file" ] || { echo "Error reading file" 1>&2; exit 1; }
 	md5=`head "$file" -c 10485760|md5sum -b -|cut -f 1 -d ' '`
 	add=(0 13 16 11 5)
 	mul=(2 2 5 4 3)
@@ -23,12 +24,12 @@ for file in "$@"; do
 	wget "$url" -qO "$tmpfile"
 
 	if [[ "$(head "$tmpfile" -c 3)" == "NPc" ]]; then
-		echo "Subtitles not found."
+		echo "Subtitles not found." 1>&2
 	else
 		outfile="${file%.*}.sub"
 		napipass="iBlm8NTigvru0Jr0"
 		/usr/bin/7z x -q -y -so -p"$napipass" "$tmpfile" > "$outfile"
-		[[ $? -eq 0 ]] && echo "Subtitles stored OK." || echo "Error extracting."
+		[[ $? -eq 0 ]] && echo "Subtitles stored OK." || echo "Error extracting." 1>&2
 	fi
 
 	rm "$tmpfile"
