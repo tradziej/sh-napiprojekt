@@ -28,7 +28,7 @@ for file in "$@"; do
 	else
 		outfile="${file%.*}.sub"
 		napipass="iBlm8NTigvru0Jr0"
-		/usr/bin/7z x -q -y -so -p"$napipass" "$tmpfile" > "$outfile"
+		/usr/bin/7z x -y -so -p"$napipass" "$tmpfile" > "$outfile" 2>/dev/null
 		[[ $? -eq 0 ]] && echo "Subtitles stored OK." || echo "Error extracting." 1>&2
 	fi
 
