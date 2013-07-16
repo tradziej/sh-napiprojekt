@@ -1,6 +1,8 @@
 #!/bin/bash
 [[ -z "$@" ]] && { echo "No files selected" 1>&2; exit 1; }
 
+lang=$(echo "$1"|tr '[:lower:]' '[:upper:]'); shift
+[[ "$lang" != "PL" && "$lang" != "EN" ]] && { echo "Wrong language $lang" 1>&2; exit 1; }
 for file in "$@"; do
 	echo "Processing $file..."
 
@@ -19,7 +21,7 @@ for file in "$@"; do
 		checksum+=$(printf '%x' $(( $v * $m )) | tail -c 1 )
 	done
 
-	url="http://napiprojekt.pl/unit_napisy/dl.php?l=PL&f=$md5&t=$checksum&v=other&kolejka=false&nick=&pass=&napios=posix"
+	url="http://napiprojekt.pl/unit_napisy/dl.php?l=$lang&f=$md5&t=$checksum&v=other&kolejka=false&nick=&pass=&napios=posix"
 	tmpfile="$(mktemp)"
 	wget "$url" -qO "$tmpfile"
 
