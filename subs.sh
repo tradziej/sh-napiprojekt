@@ -1,6 +1,10 @@
 #!/bin/bash
 [[ -z "$@" ]] && { echo "No files selected" 1>&2; exit 1; }
 
+for dep in 7z md5sum; do
+	command -v $dep >/dev/null 2>&1 || { echo 1>&2 "$dep is not installed. Aborting."; exit 1; }
+done
+
 lang=$(echo "$1"|tr '[:lower:]' '[:upper:]'); shift
 [[ "$lang" != "PL" && "$lang" != "EN" ]] && { echo "Wrong language $lang" 1>&2; exit 1; }
 for file in "$@"; do
