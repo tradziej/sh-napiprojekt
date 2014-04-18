@@ -30,8 +30,10 @@ for file in "$@"; do
 	else
 		outfile="${file%.*}.sub"
 		napipass="iBlm8NTigvru0Jr0"
-		/usr/bin/7z x -y -so -p"$napipass" "$tmpfile" > "$outfile" 2>/dev/null
+		#assert it unpacks just one file named in $md5.* fashion
+		/usr/bin/7z x -y -p"$napipass" "$tmpfile" >/dev/null 2>/dev/null && cp "$md5".* "$outfile"
 		[[ $? -eq 0 ]] && echo "Subtitles stored OK." || echo "Error extracting." 1>&2
+		rm "$md5".*
 	fi
 
 	rm "$tmpfile"
