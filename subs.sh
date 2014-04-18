@@ -31,7 +31,7 @@ for file in "$@"; do
 		outfile="${file%.*}.sub"
 		napipass="iBlm8NTigvru0Jr0"
 		#assert it unpacks just one file named in $md5.* fashion
-		/usr/bin/7z x -y -p"$napipass" "$tmpfile" >/dev/null 2>/dev/null && cp "$md5".* "$outfile"
+		7z x -y -p"$napipass" "$tmpfile" >/dev/null 2>/dev/null && cp "$md5".* "$outfile"
 		[[ $? -eq 0 ]] && echo "Subtitles stored OK." || echo "Error extracting." 1>&2
 		rm "$md5".*
 	fi
